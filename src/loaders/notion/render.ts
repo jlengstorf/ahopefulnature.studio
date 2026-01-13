@@ -64,7 +64,6 @@ async function renderImage(
       height: 900,
       crop: 'fit',
       quality: 'auto',
-      format: 'auto',
     });
   } catch (err) {
     console.error(err);
