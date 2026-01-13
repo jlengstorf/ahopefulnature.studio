@@ -37,6 +37,7 @@ const notionBlog = defineCollection({
   schema: z.object({
     title: z.string(),
     slug: z.string(),
+    author: z.string(),
     publishedAt: z.date(),
     type: z.enum(types).optional().default('art'),
     topics: z.array(z.enum(topics)).optional().default([]),

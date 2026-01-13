@@ -158,6 +158,10 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
     case 'files':
       const details = property.files.at(0);
 
+      if (!details) {
+        return;
+      }
+
       let src;
 
       try {
@@ -193,7 +197,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
         });
       } catch (error) {
         console.log(
-          `error parsing notion property ${JSON.stringify(property, null, 2)}`,
+          `error parsing notion property ${JSON.stringify({ details, property}, null, 2)}`,
         );
         console.error(JSON.stringify(error, null, 2));
         return src;
@@ -201,7 +205,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 
     default:
       console.log(`unhandled property type ${property.type}`);
-      return '';
+      return;
   }
 }
 
@@ -220,6 +224,7 @@ export function notionLoader({
     schema: z.object({
       title: z.string(),
       slug: z.string(),
+      author: z.string(),
       publishedAt: z.date(),
       type: z.enum(types),
       topics: z.array(z.enum(topics)).optional().default([]),
@@ -252,6 +257,7 @@ export function notionLoader({
           pages.map(async (page: any) => {
             const property_title = page.properties['Title'];
             const property_slug = page.properties['Slug'];
+            const property_author = page.properties['Author'];
             const property_publishDate = page.properties['Publish date'];
             const property_share_description =
               page.properties['Sharing Description'];
@@ -274,6 +280,7 @@ export function notionLoader({
             const [
               title,
               slug,
+              author,
               publishedAt,
               description,
               imageSrc,
@@ -286,6 +293,10 @@ export function notionLoader({
               }),
               parseNotionProperty(property_slug).catch((err) => {
                 console.log('error parsing Notion property: slug');
+                console.log(err);
+              }),
+              parseNotionProperty(property_author).catch((err) => {
+                console.log('error parsing Notion property: author');
                 console.log(err);
               }),
               parseNotionProperty(property_publishDate).catch((err) => {
@@ -313,20 +324,19 @@ export function notionLoader({
               }),
             ]);
 
-            const data = await parseData({
+            const pageData = {
               id: rt.plain_text,
               data: {
                 title,
                 slug,
+                author,
                 publishedAt,
                 description,
-                image: {
-                  src: imageSrc,
-                  alt: imageAlt,
-                },
+                image: imageSrc ? { src: imageSrc, alt: imageAlt } : undefined,
               },
-            });
+            };
 
+            const data = await parseData(pageData);
             const html = await blocksToHTML(blocks as BlockObjectResponse[]);
 
             return store.set({

@@ -10,7 +10,7 @@ export interface Props {
 
 const {
 	title,
-	description = 'Marisa Morby connects people to nature through art, information design, and storytelling.',
+	description = 'A Hopeful Nature promotes connection and hope through nature.',
 	image = 'https://res.cloudinary.com/jlengstorf/image/upload/f_auto/q_auto/v1739753529/marisa-morby-og.jpg',
 } = Astro.props;
 ---
@@ -18,15 +18,9 @@ const {
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link
-			rel="preconnect"
-			href="https://fonts.googleapis.com"
-		/>
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Oranienbaum&display=swap"
-			rel="stylesheet"
-		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
@@ -80,13 +74,12 @@ const {
 
 	:root {
 		/* typically colors and such will go here */
-		--background: #ededed;
-		--foreground: black;
-		--gray: #252525;
+		--background: #FFF7EE;
+		--foreground: #54483B ;
 
 		background: var(--background);
 		color: var(--foreground);
-		font-family: 'Manrope', serif;
+		font-family: "EB Garamond", serif;
 		font-optical-sizing: auto;
 		font-weight: 400;
 		font-style: normal;
@@ -98,15 +91,22 @@ const {
 	}
 
 	:is(h1, h2, h3, h4, h5, h6) {
-		font-family: 'Oranienbaum', serif;
+		font-family: "EB Garamond", serif;
+		color: #56442F;
 		font-weight: 400;
 		font-style: normal;
 		line-height: 1.1;
+		-webkit-font-smoothing: antialiased;
 	}
 
+	.byline {
+	font-style: italic;
+    color: #7E7265;
+  }
+
 	a {
-    color: purple;
-}
+    color: #56442F;
+	}
 
 	img{
 		max-inline-size: 100%;

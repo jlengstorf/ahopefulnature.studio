@@ -8,12 +8,13 @@ export interface Props {
     alt?: string | null;
   };
   title: string;
+  author: string;
   description?: string;
   topics?: string[];
   type: string;
 }
 
-const { path, img, title, description, topics = [], type } = Astro.props;
+const { path, img, title, author, description, topics = [], type } = Astro.props;
 ---
 
 <div class="blog-preview" data-type={type} data-topic={topics.join(' ')}>
@@ -21,17 +22,16 @@ const { path, img, title, description, topics = [], type } = Astro.props;
     {
       img?.src ? (
         <Image src={img?.src} alt={img?.alt} />
-      ) : (
-        <div class="image-placeholder" />
-      )
+      ) : null
     }
   </a>
 
   <h2><a href={path}>{title}</a></h2>
 
-  <p>{description}</p>
+  <p class="byline"><a href={path}>by {author}</a></p>
 
-  <a href={path}>read more</a>
+  <p><a href={path}>{description}</a></p>
+
 </div>
 
 <style>
@@ -40,6 +40,18 @@ const { path, img, title, description, topics = [], type } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center;
+
+    p {
+      text-align: center;
+    }
+    a {
+      text-decoration: none;
+    }
+    
+    &:focus-within a, &:has(:hover) a {
+      color: #BC680A;
+    }
   }
 
   :is(h2, p, a) {
@@ -51,7 +63,7 @@ const { path, img, title, description, topics = [], type } = Astro.props;
     aspect-ratio: 292 / 230;
     background: color-mix(in oklch, var(--foreground) 5%, transparent);
     block-size: auto;
-    border-radius: 4px;
+    border-radius: 30px;
     display: block;
     inline-size: 100%;
     object-fit: cover;

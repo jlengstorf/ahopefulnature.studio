@@ -1,12 +1,12 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/default.astro';
+import Signup from '../components/signup.astro';
 
 export async function getStaticPaths() {
-  const markdownPosts = await getCollection('blog');
   const notionPosts = await getCollection('notionBlog');
 
-  const posts = [...markdownPosts, ...notionPosts].sort(
+  const posts = notionPosts.sort(
     (a, b) => a.data.publishedAt.getTime() - b.data.publishedAt.getTime(),
   );
 
@@ -29,7 +29,7 @@ const { Content } = await render(post);
 
     <meta property="og:type" content="article" />
     <meta property="og:title" content={post.data.title} />
-    <meta property="og:site_name" content="Marisa Morby" />
+    <meta property="og:site_name" content={post.data.author} />
     <meta property="og:description" content={post.data.description} />
     <meta property="og:url" content={Astro.url} />
 
@@ -45,14 +45,60 @@ const { Content } = await render(post);
   </Fragment>
 
   <article>
-    <h1>{post.data.title}</h1>
+    <h1 class="blogTitle">{post.data.title}</h1>
+    <p class="byline">by {post.data.author}</p>
+
     <Content />
-  </article>
+
+    </article>
+
+  </div>
+
+    <div class="pear">
+    <svg width="33" height="33" viewBox="0 0 37 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0.221214 14.1507C0.753118 16.3244 3.33432 18.9618 3.33432 18.9618C3.33432 18.9618 0.577778 22.3093 0.221214 24.905C-0.200942 27.9782 2.00878 29.4679 2.39096 32.5463C2.6996 35.0324 2.20749 36.4627 2.39096 38.9612C2.62072 42.0901 2.43861 44.0181 3.71167 46.8855C5.04014 49.8777 6.40191 51.3956 8.99452 53.3947C11.6457 55.439 13.4923 56.5618 16.8245 56.8851C19.773 57.1712 21.7417 57.0023 24.2771 55.4701C26.7196 53.994 26.6812 51.6053 28.8996 49.8099C30.7076 48.3466 32.5418 48.623 34.0881 46.8855C36.3754 44.3152 36.4154 41.724 36.0691 38.3008C35.5857 33.5218 33.0606 31.1095 29.4656 27.9238C26.1855 25.0171 23.2231 25.0859 19.4659 22.8296C15.7685 20.6092 14.7188 16.6862 10.4096 16.5091C8.61192 16.4352 5.88141 17.3581 5.88141 17.3581C5.88141 17.3581 4.21197 15.3314 3.71167 13.7733C3.25889 12.3632 4.65503 11.2262 3.33432 9.99984C2.01362 8.77343 0.409878 8.11314 0.221214 9.99984C0.0325494 11.8865 -0.164063 12.5761 0.221214 14.1507Z" fill="#755E43"/>
+    <path d="M5.00548 14.1641L4.1144 15.9904L5.37338 18.164L7.08633 15.4522C7.08633 15.4522 10.627 15.7055 12.5321 14.7177C14.0831 13.9135 14.739 13.0458 15.7849 11.6463C16.9031 10.1504 17.8978 7.35595 17.8978 7.35595C17.8978 7.35595 18.8959 5.21774 20.1545 4.96798C20.7326 4.85324 20.3958 4.87875 21.6598 5.07871C22.9238 5.27868 23.4143 4.71383 21.7844 3.38523C20.1545 2.05663 19.2895 1.53244 17.4137 1.0773C14.6332 0.402607 12.6451 0.651269 10.1527 2.05663C7.53602 3.53212 6.42037 5.30033 5.44841 8.1428C4.68555 10.3738 5.00548 14.1641 5.00548 14.1641Z" fill="#755E43"/>
+    </svg>
+
+    </div>
+
+  <div class="newsletter">
+      <p>A Hopeful Nature is an artistic compilation curated by 
+    Marisa Morby to help us connect, discover joy, and continue 
+    the hard work of hope. Sign up for updates.</p>
+			<Signup />
+    </div>
+  
 </Layout>
 
 <style>
+  .blogTitle {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+
+  .byline{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 60px;
+  }
+
   article {
-    inline-size: min(100%, 58ch);
+    padding-top: 18px;
+    inline-size: min(100%, 65ch);
+    margin-inline: auto;
+  }
+
+  .pear {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .newsletter{
+    padding-top: 18px;
+    inline-size: min(100%, 65ch);
     margin-inline: auto;
   }
 </style>

@@ -1,60 +1,45 @@
 ---
-const navItems = [
-	{ path: '/about', label: 'about' },
-];
 
 const currentPath = Astro.url.pathname;
 ---
 
 <header>
-	<a href="/" rel="home" class="logo">
-		<span aria-label="Marisa Morby">mm.</span>
+	<a href="/" rel="home" class="title" >
+		<span aria-label="A Hopeful Nature">A HOPEFUL NATURE</span>
 	</a>
-
-	<nav>
-		{
-			navItems.map(({ path, label }) => (
-				<a href={path} class:list={[{ active: currentPath === path }]}>
-					{label}
-				</a>
-			))
-		}
-	</nav>
 </header>
+<div class="line"></div>
+
+
 
 <style>
 	header {
-		align-items: baseline;
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		margin-inline: auto;
+		padding-block: 30px;
 		max-inline-size: min(90dvi, 1280px);
 	}
 
-	.logo {
+	.title {
 		color: inherit;
-		font-family: 'Oranienbaum', serif;
-		font-size: 2.75rem;
+		letter-spacing: 10px;
+		font-family: 'EB Garamond', serif;
+		font-size: 2.3rem;
 		line-height: 1;
 		text-decoration: none;
+		text-align: center;
+		-webkit-font-smoothing: antialiased;
+		
+	&:hover {
+		color: #BC680A;
+
+	}
+}
+	.line {
+	width: 100%;
+    border-bottom: 1px solid #DDC8B0;
+    position: absolute;
 	}
 
-	nav {
-		display: flex;
-		font-size: 1.2rem;
-		gap: 40px;
-
-		a {
-			color: var(--gray);
-			text-decoration: none;
-
-			&:is(:focus, :active, :hover) {
-				text-decoration: underline;
-			}
-		}
-	}
-
-	.active {
-		font-weight: 700;
-	}
 </style>
