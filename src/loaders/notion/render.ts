@@ -56,7 +56,7 @@ async function renderImage(
     const upload = await cloudinary.uploader.upload(imageUrl, {
       overwrite: false,
       use_filename: true,
-      unique_filename: false,
+      unique_filename: true,
     });
 
     imageUrl = cloudinary.url(upload.public_id, {
