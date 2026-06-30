@@ -52,22 +52,30 @@ const NotionProperty = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('select'),
     id: z.string(),
-    select: z.object({
-      id: z.string(),
-      name: z.string(),
-      color: z.string(),
-    }),
+    select: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        color: z.string(),
+      })
+      .nullable(),
   }),
   z.object({
     type: z.literal('multi_select'),
     id: z.string(),
-    multi_select: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        color: z.string(),
-      }),
-    ),
+    multi_select: z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          color: z.string(),
+        }),
+      )
+      .nullable(),
+  }),
+  z.object({
+    type: z.literal('divider'),
+    id: z.string(),
   }),
   z.object({
     type: z.literal('date'),
@@ -148,12 +156,17 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
       return property.date.start;
 
     case 'select':
-      return property.select.name;
+      return property.select?.name ?? null;
 
     case 'multi_select':
-      return property.multi_select.map((item) => {
-        return item.name;
-      });
+      return (
+        property.multi_select?.map((item) => {
+          return item.name;
+        }) ?? []
+      );
+
+    case 'divider':
+      return '---';
 
     case 'files':
       const details = property.files.at(0);
@@ -197,7 +210,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
         });
       } catch (error) {
         console.log(
-          `error parsing notion property ${JSON.stringify({ details, property}, null, 2)}`,
+          `error parsing notion property ${JSON.stringify({ details, property }, null, 2)}`,
         );
         console.error(JSON.stringify(error, null, 2));
         return src;
@@ -226,7 +239,7 @@ export function notionLoader({
       slug: z.string(),
       author: z.string(),
       publishedAt: z.date(),
-      type: z.enum(types),
+      type: z.enum(types).nullable(),
       topics: z.array(z.enum(topics)).optional().default([]),
       image: z
         .object({

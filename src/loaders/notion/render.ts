@@ -147,6 +147,10 @@ export async function blocksToHTML(blocks: BlockObjectResponse[]) {
         html.push(img);
         break;
 
+      case 'divider':
+        html.push(`<hr />`);
+        break;
+
       // These are the blocks we’re NOT using but wanted to list them in case
       // we end up needing them later.
       case 'video':
@@ -160,7 +164,6 @@ export async function blocksToHTML(blocks: BlockObjectResponse[]) {
       case 'code':
       case 'column':
       case 'column_list':
-      case 'divider':
       case 'embed':
       case 'equation':
       case 'file':
