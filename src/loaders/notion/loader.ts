@@ -350,7 +350,10 @@ export function notionLoader({
             };
 
             const data = await parseData(pageData);
-            const html = await blocksToHTML(blocks as BlockObjectResponse[]);
+            const html = await blocksToHTML(
+              blocks as BlockObjectResponse[],
+              title as string,
+            );
 
             return store.set({
               id: rt.plain_text,

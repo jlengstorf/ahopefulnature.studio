@@ -86,7 +86,10 @@ async function renderImage(
  * This is far from comprehensive and it’s missing a whole bunch of blocks but
  * it covers my use case, so... whatever. Good enough.
  */
-export async function blocksToHTML(blocks: BlockObjectResponse[]) {
+export async function blocksToHTML(
+  blocks: BlockObjectResponse[],
+  title: string,
+) {
   let html: string[] = [];
   let insideUnorderedList = false;
   let insideOrderedList = false;
@@ -179,7 +182,7 @@ export async function blocksToHTML(blocks: BlockObjectResponse[]) {
       case 'toggle':
       case 'unsupported':
       default:
-        console.error(`unhandled block ${block.type}`);
+        console.error(`unhandled block ${block.type} in "${title}"`);
     }
   }
 
